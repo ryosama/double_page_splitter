@@ -2,7 +2,6 @@
 
 use strict;
 
-use Data::Dumper;
 use GD;
 use Getopt::Long ;
 use File::Copy;
@@ -10,7 +9,7 @@ use File::Path;
 
 my %options = ();
 GetOptions (\%options,'input-dir=s','input-file=s', 'output-dir=s', 'quality=i', 'japanese|j','help|h','quiet|q') or die ;
-print_help() if exists $options{'help'} ; # affiche le message avec les options dispo
+print_help() if exists $options{'help'} ; # display a mesasge with available options
 die "You can't use --input-dir and --input-file at the same time" if exists $options{'input-dir'} && exists $options{'input-file'};
 
 # default values
@@ -68,12 +67,12 @@ sub split_image($$$) {
 	my $width  = $src_image->width;
 	my $height = $src_image->height;
 
-	# probably a double page
+	# if image is wide --> probably a double page
 	if ($width > $height) {
 		print "[+] Split '$filename'\n" unless $options{'quiet'};
 		
 		# create output obj
-		my 	$out_image = GD::Image->new($width / 2 , $height);
+		my $out_image = GD::Image->new($width / 2 , $height);
 
 		# copy left side
 		$out_image->copy($src_image, 0, 0, 0, 0, $width / 2, $height); # left half image
@@ -87,16 +86,18 @@ sub split_image($$$) {
 	} else {
 		print "[ ] Skip  '$filename'\n" unless $options{'quiet'};
 
-		$left_name =~  s/-left$//i; #$options{input-dir}/split/${filename}-left
+		$left_name =~  s/-left$//i;
 		copy($filename,"${left_name}.jpg") or warn "Unable to copy $filename ($!)";
 	}
 }
 
+# check if filename is good
 sub filename_is_image($) {
 	my ($filename) = shift;
 	return $filename =~ /\.(?:jpe?g|gif|png|tiff?)$/i;
 }
 
+# save GD Obj into a jpeg file
 sub save_jpeg($$) {
 	my ($gd_obj,$filename) = @_;
 	
@@ -107,6 +108,7 @@ sub save_jpeg($$) {
 	close OUTPUT;
 }
 
+# display the documentation
 sub print_help {
 	print <<EOT ;
 --input-dir=dirname		Split all files in a directory
