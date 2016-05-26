@@ -10,25 +10,25 @@ This program makes the job for you
 # Usage
 -------
 Options :
---input-dir=dirname
+`--input-dir=dirname`
 	Split all files in a directory
 
---input-file=filename
+`--input-file=filename`
 	Split only one file
 
---output-dir=dirname
+`--output-dir=dirname`
 	Directory where the splited file are saved (default is 'split')
 
---quality=x
+`--quality=x`
 	JPEG output quality (default is 90)
 
---japanese or -j
+`--japanese` or `-j`
 	Invert left and right side
 
---quiet or -q
+`--quiet` or `-q`
 	Don't print anything
 
---help or -h
+`--help` or `-h`
 	Display this message
 
 # Examples
