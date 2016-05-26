@@ -6,6 +6,7 @@ use GD;
 use Getopt::Long ;
 use File::Copy;
 use File::Path;
+use File::Basename;
 
 my %options = ();
 GetOptions (\%options,'input-dir=s','input-file=s', 'output-dir=s', 'quality=i', 'japanese|j','help|h','quiet|q') or die ;
@@ -30,7 +31,8 @@ if (exists $options{'input-file'} && length($options{'input-file'})>0) {
 	die "Image '".$options{'input-file'}."' don't exist " if !-e $options{'input-file'};
 	die "Image name '".$options{'input-file'}."' is not an image" if !filename_is_image($options{'input-file'});
 
-	if (!-d $options{'output-dir'}) { mkpath($options{'output-dir'}) or die "Unable to create dir '".$options{'output-dir'}."' ($!)"; }
+	my $output_dir = $options{'output-dir'}.'/'.dirname($options{'input-file'});
+	if (!-d $output_dir) { mkpath($output_dir) or die "Unable to create dir '$output_dir' ($!)"; }
 
 	my $filename_without_ext = $options{'input-file'} ;
 	$filename_without_ext =~ s/\.(?:jpe?g|gif|png|tiff?)$//i;
@@ -61,7 +63,7 @@ if (exists $options{'input-file'} && length($options{'input-file'})>0) {
 ######################################################################################################
 sub split_image($$$) {
 	my ($filename, $left_name, $right_name) = @_;
-	my $src_image = GD::Image->new($filename) or die "Unable to read image '$filename'";
+	my $src_image = myGDimageOpen($filename);
 
 	# get image width
 	my $width  = $src_image->width;
@@ -91,11 +93,24 @@ sub split_image($$$) {
 	}
 }
 
+# own newFrom because some times, GD don't reconize jpeg file
+sub myGDimageOpen($) {
+	my ($filename) = shift;
+	my $gd_obj;
+	if    ($filename =~ /\.jpe?g$/i) { $gd_obj = GD::Image->newFromJpeg($filename) or die "Unable to read JPEG image '$filename'"; }
+	elsif ($filename =~ /\.gif$/i)   { $gd_obj = GD::Image->newFromGif($filename)  or die "Unable to read GIF image '$filename'"; }
+	elsif ($filename =~ /\.png$/i)   { $gd_obj = GD::Image->newFromPng($filename)  or die "Unable to read PNG image '$filename'"; }
+	elsif ($filename =~ /\.xbm$/i)   { $gd_obj = GD::Image->newFromXbm($filename)  or die "Unable to read XBM image '$filename'"; }
+
+	return $gd_obj;
+}
+
 # check if filename is good
 sub filename_is_image($) {
 	my ($filename) = shift;
-	return $filename =~ /\.(?:jpe?g|gif|png|tiff?)$/i;
+	return $filename =~ /\.(?:jpe?g|gif|png|xbm?)$/i;
 }
+
 
 # save GD Obj into a jpeg file
 sub save_jpeg($$) {
