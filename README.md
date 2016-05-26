@@ -33,6 +33,6 @@ Options :
 
 # Examples
 ----------
-`perl double_page_splitter.pl --input-file=good-manga-page-011.jpg`
+`perl double_page_splitter.pl --input-file=*good-manga-page-011.jpg*`
 
-`perl double_page_splitter.pl --input-dir=Good-Manga-vol_01 --japanese`
+`perl double_page_splitter.pl --input-dir=*Good-Manga-vol_01* --japanese`
