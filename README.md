@@ -10,6 +10,7 @@ This program makes the job for you
 # Usage
 -------
 Options :
+
 `--input-dir=dirname`
 	Split all files in a directory
 
@@ -17,7 +18,7 @@ Options :
 	Split only one file
 
 `--output-dir=dirname`
-	Directory where the splited file are saved (default is 'split')
+	Directory where the splited files are saved (default is 'split')
 
 `--quality=x`
 	JPEG output quality (default is 90)
