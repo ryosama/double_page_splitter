@@ -108,16 +108,10 @@ sub crop_image($) {
 
 	# algo :
 	# draw a square of 3x3 pixel, compute average color, compare color to white with tolerance to detect if white or not !
-
 	my $pixel_to_crop_from_bottom 	= pixel_to_crop_from_bottom($src_image);
 	my $pixel_to_crop_from_top 		= pixel_to_crop_from_top($src_image);
 	my $pixel_to_crop_from_right 	= pixel_to_crop_from_right($src_image);
 	my $pixel_to_crop_from_left		= pixel_to_crop_from_left($src_image);
-
-	# print "DEBUG \$pixel_to_crop_from_bottom=$pixel_to_crop_from_bottom\n";
-	# print "DEBUG \$pixel_to_crop_from_top=$pixel_to_crop_from_top\n";
-	# print "DEBUG \$pixel_to_crop_from_right=$pixel_to_crop_from_right\n";
-	# print "DEBUG \$pixel_to_crop_from_left=$pixel_to_crop_from_left\n";
 	
 	# create output obj
 	my $crop_image = GD::Image->new($width - $pixel_to_crop_from_right - $pixel_to_crop_from_left,
@@ -141,18 +135,12 @@ sub pixel_to_crop_from_bottom($) {
 
 	for(my $y=$image->height -1 ; $y>0 ; $y--) {
 		for(my $x=0 ; $x<$image->width ; $x++) {
-
 			if (pixel_is_white($image, $x, $y , 1, 'vertical') == 0) { # is black
 				$line_is_white = 0;
-				# printf "DEBUG : pixel %d,%d is BLACK --> quitting\n\n", $x, $y;
 				last;
-
-			} else { # is white
-				# printf "DEBUG : pixel %d,%d is white\n\n", $x, $y;
 			}
 		}
 
-		# print "DEBUG LINE $y \$line_is_white=$line_is_white\n";
 		if (!$line_is_white) {
 			last;
 		} else {
@@ -171,18 +159,12 @@ sub pixel_to_crop_from_top($) {
 
 	for(my $y=0 ; $y<$image->height -1 ; $y++) {
 		for(my $x=0 ; $x<$image->width ; $x++) {
-
 			if (pixel_is_white($image, $x, $y , 1, 'vertical') == 0) { # is black
 				$line_is_white = 0;
-				# printf "DEBUG : pixel %d,%d is BLACK --> quitting\n\n", $x, $y;
 				last;
-
-			} else { # is white
-				# printf "DEBUG : pixel %d,%d is white\n\n", $x, $y;
 			}
 		}
 
-		# print "DEBUG LINE $y \$line_is_white=$line_is_white\n";
 		if (!$line_is_white) {
 			last;
 		} else {
@@ -201,18 +183,12 @@ sub pixel_to_crop_from_right($) {
 
 	for(my $x=$image->width -1 ; $x>0 ; $x--) {
 		for(my $y=0 ; $y<$image->height ; $y++) {
-
 			if (pixel_is_white($image, $x, $y , 1, 'horizontal') == 0) { # is black
 				$line_is_white = 0;
-				# printf "DEBUG : pixel %d,%d is BLACK --> quitting\n\n", $x, $y;
 				last;
-
-			} else { # is white
-				# printf "DEBUG : pixel %d,%d is white\n\n", $x, $y;
 			}
 		}
 
-		# print "DEBUG LINE $x \$line_is_white=$line_is_white\n";
 		if (!$line_is_white) {
 			last;
 		} else {
@@ -231,18 +207,12 @@ sub pixel_to_crop_from_left($) {
 
 	for(my $x=0 ; $x<$image->width -1 ; $x++) {
 		for(my $y=0 ; $y<$image->height ; $y++) {
-
 			if (pixel_is_white($image, $x, $y , 1, 'horizontal') == 0) { # is black
 				$line_is_white = 0;
-				# printf "DEBUG : pixel %d,%d is BLACK --> quitting\n\n", $x, $y;
 				last;
-
-			} else { # is white
-				# printf "DEBUG : pixel %d,%d is white\n\n", $x, $y;
 			}
 		}
 
-		# print "DEBUG LINE $x \$line_is_white=$line_is_white\n";
 		if (!$line_is_white) {
 			last;
 		} else {
@@ -279,8 +249,6 @@ sub pixel_is_white($$$$) {
 	my $total_color = {'r'=>0, 'g'=>0, 'b'=>0};
 	my $nb_pixel = 0;
 
-	# printf "DEBUG : looking for pixel %d,%d (radius=%d)\n", $x , $y, $radius;
-
 	for(my $i=-1*$radius ; $i<=$radius ; $i++) {
 		for(my $j=-1*$radius ; $j<=$radius ; $j++) {
 			my $index = $image->getPixel($x + $i, $y + $j);
@@ -289,7 +257,6 @@ sub pixel_is_white($$$$) {
 			$total_color->{'g'} += $g;
 			$total_color->{'b'} += $b;
 			$nb_pixel++;
-			# printf "DEBUG : PIXEL(%d,%d)=%d, %d, %d\n", $x + $i, $y + $j, $r, $g, $b;
 		}
 	}
 
