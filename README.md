@@ -7,6 +7,8 @@ This program makes the job for you
 
 ![Basic Example](gfx/basic_usage.jpg?raw=true "Basic Example")
 
+![Crop Example](gfx/crop_usage.jpg?raw=true "Crop Example")
+
 # Usage
 -------
 Options :
@@ -22,6 +24,9 @@ Options :
 
 `--quality=x`
 	JPEG output quality (default is 90)
+
+`--crop` or `-c`
+	Try to remove white border around page
 
 `--japanese` or `-j`
 	Invert left and right side
